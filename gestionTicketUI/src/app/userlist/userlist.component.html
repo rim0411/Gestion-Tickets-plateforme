@@ -1,0 +1,108 @@
+<nav class="navbar navbar-light bg-light " style="background-color: #e3f2fd;">
+  <a class="navbar-brand">Chercher un user</a>
+  <form class="form-inline">
+    <select class="mdb-select md-form" style="background-color: rgb(225, 242, 245);font-size: 12px;"
+    [(ngModel)]="statut2" name="form" class="form-control form-control-sm" required
+    [ngClass]="{ 'is-invalid': submitted && f.label.errors }" >
+    <option  >email</option>
+    <option  >username</option>
+    <option  >label</option>
+    <option  >id</option>
+  </select>
+    <input class="form-control mr-sm-2" [(ngModel)]="choix" name="choix" type="text" placeholder="rechercher"
+      aria-label="Search">
+    <button (click)="recherche2(statut2)" class="btn btn-outline-success my-2 my-sm-0" type="submit">rechercher</button> <br>
+    <button (click)="gotoaddsupport()" class="btn btn-outline-primary my-2 my-sm-0" type="submit">Ajouter un support</button>
+  </form>
+</nav>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="text-center">
+    <h2>Liste des utilisateurs</h2>
+  </div>
+</div>
+  <div class="panel-body">
+    <table  class="table table-hover">
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>label</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users ">
+          <td>{{user.id}}</td>
+          <td>{{user.username}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.label.name}}</td>
+          <td><button (click)=" DeleteUser(user)" class="btn btn-danger">Delete</button>
+            <button data-toggle="modal"
+            data-target="#elegantModalForm3" (click)="openModal(user)" class="btn btn-info" style="margin-left: 10px">Update</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<div class="modal fade" id="elegantModalForm3" tabindex="-1" role="dialog"
+aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <!--Content-->
+  <div class="modal-content form-elegant">
+    <!--Header-->
+    <div class="modal-header text-center">
+      <h3 class="modal-title w-100 dark-grey-text font-weight-bold my-3" id="myModalLabel">
+        <p style="color: darkblue;font-weight: bold;font-size: 20px;">Modifier un utilisateur </p>
+      </h3>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <!--Body-->
+    <div class="modal-body mx-4">
+      <!--Body-->
+      <div class="md-form mb-5">
+
+
+
+
+          <div class="zz">
+            <div class="container col-md-6">
+              <div class="card" style ="width: 400px;margin-left: -110px;">
+
+                <div class="card-body">
+                  <form action=""     (ngSubmit)="Actualiser()">
+                  
+                    <div class="form-group">
+                      <label for="">Username:</label>
+                      <input [(ngModel)]="username" name="username" type="text" class="form-control">
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="">email:</label>
+                      <input [(ngModel)]="email" name="email" type="text" class="form-control">
+                    </div>
+                    <button  class="btn btn-success">Submit</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+     
+      </div>
+    </div>
+    <!--Footer-->
+    <div class="modal-footer mx-5 pt-3 mb-1">
+      <p class="font-small grey-text d-flex justify-content-end"> <a href="#"
+          class="blue-text ml-1">
+        </a></p>
+    </div>
+  </div>
+  <!--/.Content-->
+</div>
+</div>

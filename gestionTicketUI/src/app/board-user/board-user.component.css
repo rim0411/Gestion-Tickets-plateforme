@@ -1,0 +1,64 @@
+.size{
+  font-size: 20px;
+}
+
+
+  
+  .hr{
+    height:2px;
+    margin:60px 0 50px 0;
+    background:rgba(255,255,255,.2);
+  }
+  .foot-lnk{
+    text-align:center;
+  }
+
+
+  .active-pink-textarea-2 textarea.md-textarea {
+    border-bottom: 1px solid #f48fb1;
+    box-shadow: 0 1px 0 0 #f48fb1;
+  }
+  .active-pink-textarea-2.md-form label.active {
+    color: #f48fb1;
+  }
+  .active-pink-textarea-2.md-form label {
+    color: #f48fb1;
+  }
+  .active-pink-textarea-2.md-form textarea.md-textarea:focus:not([readonly])+label {
+    color: #f48fb1;
+  }
+  .size{
+    font-size: 15px;
+    font-family: Cambria;
+    background-color: rgb(248, 246, 246);
+
+}
+h3{
+  text-align: center;
+  color: cadetblue;
+}
+.resolue{
+  text-align: center;
+  color: cadetblue;
+
+}
+.sat{
+  text-align: center;
+  color: cadetblue;
+
+}
+.oui{
+  color: cadetblue;
+
+}
+.check:hover
+{ 
+ background-color: rgb(47, 255, 168) ;
+
+}
+
+
+
+
+  
+  

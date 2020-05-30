@@ -1,0 +1,60 @@
+<div class="container">
+<nav class="navbar navbar-light bg-light "style ="background-color: rgb(119, 183, 236);">
+  <a class="navbar-brand">Chercher un ticket</a>
+  <form class="form-inline">
+    <select class="mdb-select md-form" style="background-color: rgb(225, 242, 245);font-size: 12px;"
+    [(ngModel)]="statut2" name="form" class="form-control form-control-sm" required
+    [ngClass]="{ 'is-invalid': submitted && f.label.errors }" >
+    <option  >statut</option>
+    <option  >titre</option>
+    <option  >label</option>
+  </select>
+    <input class="form-control mr-sm-2" [(ngModel)]="choix" name="choix" type="text" placeholder="rechercher"
+      aria-label="Search">
+    <button (click)="recherche2(statut2)" class="btn btn-outline-success my-2 my-sm-0" type="submit">rechercher</button>
+  </form>
+</nav>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="text-center">
+    <h2 >Liste des tickets</h2>
+  </div>
+  </div>
+  <div class="panel-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>id_ticket</th>
+          <th>Titre</th>
+          <th>Description</th>
+          <th>Label</th>
+          <th>Statut</th>
+          <th>id_user</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ticket of tickets ">
+          <td>{{ticket.id_ticket}}</td>
+          <td>{{ticket.titre}}</td>
+          <td>{{ticket.description}}</td>
+          <td>{{ticket.label.name}}</td>
+          <td>{{ticket.statut}}</td>
+          <td>{{ticket.user.id}}</td>
+          <td><button (click)="DeleteTicket(ticket)" class="btn btn-danger">Delete</button>
+            <button (click)="Editar(ticket)" class="btn btn-info" style="margin-left: 10px">Update</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+
+ 
+  </div>
+</div>
+</div>
+<div>
+</div>

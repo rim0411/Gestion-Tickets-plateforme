@@ -1,0 +1,23 @@
+h3{
+    text-align: center;
+    color: cadetblue;
+}
+.resolue{
+    text-align: center;
+    color: cadetblue;
+
+}
+.sat{
+    text-align: center;
+    color: cadetblue;
+
+}
+.oui{
+    color: cadetblue;
+
+}
+.check:hover
+{ 
+   background-color: rgb(47, 255, 168) ;
+  
+}

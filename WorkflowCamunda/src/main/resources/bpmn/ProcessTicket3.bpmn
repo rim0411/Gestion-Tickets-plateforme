@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1jzephu" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.7.0">
+  <bpmn:process id="ticketm" name="GestionDesTicket" isExecutable="true" camunda:versionTag="user">
+    <bpmn:sequenceFlow id="Flow_1nhc17a" sourceRef="assigner" targetRef="changer" />
+    <bpmn:sequenceFlow id="Flow_1wex1e2" sourceRef="changer" targetRef="statutfin" />
+    <bpmn:userTask id="changer" name="changer statut de en attente vers en  cour" camunda:assignee="support">
+      <bpmn:incoming>Flow_1nhc17a</bpmn:incoming>
+      <bpmn:incoming>Flow_18ozm6b</bpmn:incoming>
+      <bpmn:outgoing>Flow_1wex1e2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="statutfin" name="Changer statut vers fin traitement" camunda:assignee="support">
+      <bpmn:incoming>Flow_1wex1e2</bpmn:incoming>
+      <bpmn:outgoing>Flow_1bds8qf</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="notifierUtilisateur" name="Notifier l&#39;utilisateur" camunda:class="com.camunda.delegates.NotifierUtilisateur">
+      <bpmn:incoming>Flow_0rizlgf</bpmn:incoming>
+      <bpmn:outgoing>Flow_09thn9u</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_09thn9u" sourceRef="notifierUtilisateur" targetRef="repondre" />
+    <bpmn:userTask id="repondre" name="Répondre au traitement" camunda:assignee="user">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="satisfait" type="boolean" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_09thn9u</bpmn:incoming>
+      <bpmn:outgoing>Flow_13a4a6x</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="satisfait" name="satisfait">
+      <bpmn:incoming>Flow_13a4a6x</bpmn:incoming>
+      <bpmn:outgoing>no</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0y81vyi</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_13a4a6x" sourceRef="repondre" targetRef="satisfait" />
+    <bpmn:sequenceFlow id="no" name="non" sourceRef="satisfait" targetRef="reouvrirTicket">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{!satisfait}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="ajouterticket" name="ajouterTicket" camunda:assignee="user">
+      <bpmn:incoming>Flow_0exh9wr</bpmn:incoming>
+      <bpmn:outgoing>Flow_1yhf36c</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="reouvrirTicket" name="reouvrirTicket">
+      <bpmn:incoming>no</bpmn:incoming>
+      <bpmn:outgoing>Flow_18ozm6b</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:startEvent id="Event_03f8gf8">
+      <bpmn:outgoing>Flow_0exh9wr</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0exh9wr" sourceRef="Event_03f8gf8" targetRef="ajouterticket" />
+    <bpmn:sequenceFlow id="Flow_18ozm6b" sourceRef="reouvrirTicket" targetRef="changer" />
+    <bpmn:sequenceFlow id="Flow_0y81vyi" name="oui" sourceRef="satisfait" targetRef="fermerTicket">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{satisfait}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="fermerTicket" name="fermerTicket" camunda:assignee="user">
+      <bpmn:incoming>Flow_0y81vyi</bpmn:incoming>
+      <bpmn:outgoing>Flow_0990ptz</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="fin2" name="fin">
+      <bpmn:incoming>Flow_0990ptz</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0990ptz" sourceRef="fermerTicket" targetRef="fin2" />
+    <bpmn:sequenceFlow id="Flow_1bds8qf" sourceRef="statutfin" targetRef="changerstatut" />
+    <bpmn:userTask id="changerstatut" name="fin traitement" camunda:assignee="support">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="action" label="action" type="string" />
+          <camunda:formField id="email" label="email" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1bds8qf</bpmn:incoming>
+      <bpmn:outgoing>Flow_0rizlgf</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0rizlgf" sourceRef="changerstatut" targetRef="notifierUtilisateur" />
+    <bpmn:businessRuleTask id="assigner" name="assigner un ticket" camunda:resultVariable="assigner" camunda:decisionRef="Decideassigner" camunda:mapDecisionResult="singleEntry">
+      <bpmn:incoming>Flow_1yhf36c</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nhc17a</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="Flow_1yhf36c" sourceRef="ajouterticket" targetRef="assigner" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="ticketm">
+      <bpmndi:BPMNEdge id="Flow_1nhc17a_di" bpmnElement="Flow_1nhc17a">
+        <di:waypoint x="660" y="309" />
+        <di:waypoint x="675" y="309" />
+        <di:waypoint x="675" y="311" />
+        <di:waypoint x="690" y="311" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wex1e2_di" bpmnElement="Flow_1wex1e2">
+        <di:waypoint x="790" y="310" />
+        <di:waypoint x="830" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_11cpglw_di" bpmnElement="changer">
+        <dc:Bounds x="690" y="280" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0l9dmbx_di" bpmnElement="statutfin">
+        <dc:Bounds x="830" y="280" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1xdxxpy_di" bpmnElement="notifierUtilisateur">
+        <dc:Bounds x="1130" y="280" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_09thn9u_di" bpmnElement="Flow_09thn9u">
+        <di:waypoint x="1230" y="320" />
+        <di:waypoint x="1290" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1vwzuux_di" bpmnElement="repondre">
+        <dc:Bounds x="1290" y="290" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1gvc19f_di" bpmnElement="satisfait" isMarkerVisible="true">
+        <dc:Bounds x="1493" y="285" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1498" y="345" width="39" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_13a4a6x_di" bpmnElement="Flow_13a4a6x">
+        <di:waypoint x="1390" y="310" />
+        <di:waypoint x="1493" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0assltt_di" bpmnElement="no">
+        <di:waypoint x="1518" y="285" />
+        <di:waypoint x="1518" y="140" />
+        <di:waypoint x="1430" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1445" y="82" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0eidmep_di" bpmnElement="ajouterticket">
+        <dc:Bounds x="260" y="290" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0dcf52b_di" bpmnElement="reouvrirTicket">
+        <dc:Bounds x="1330" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_03f8gf8_di" bpmnElement="Event_03f8gf8">
+        <dc:Bounds x="152" y="312" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0exh9wr_di" bpmnElement="Flow_0exh9wr">
+        <di:waypoint x="188" y="330" />
+        <di:waypoint x="260" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18ozm6b_di" bpmnElement="Flow_18ozm6b">
+        <di:waypoint x="1330" y="140" />
+        <di:waypoint x="700" y="140" />
+        <di:waypoint x="700" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0y81vyi_di" bpmnElement="Flow_0y81vyi">
+        <di:waypoint x="1543" y="310" />
+        <di:waypoint x="1640" y="310" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1562" y="292" width="16" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1kqel8x_di" bpmnElement="fermerTicket">
+        <dc:Bounds x="1640" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0helnbd_di" bpmnElement="fin2">
+        <dc:Bounds x="1782" y="292" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1795" y="335" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0990ptz_di" bpmnElement="Flow_0990ptz">
+        <di:waypoint x="1740" y="310" />
+        <di:waypoint x="1782" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1bds8qf_di" bpmnElement="Flow_1bds8qf">
+        <di:waypoint x="930" y="320" />
+        <di:waypoint x="980" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1dxnjuu_di" bpmnElement="changerstatut">
+        <dc:Bounds x="980" y="280" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0rizlgf_di" bpmnElement="Flow_0rizlgf">
+        <di:waypoint x="1080" y="320" />
+        <di:waypoint x="1130" y="323" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_07ybhpq_di" bpmnElement="assigner">
+        <dc:Bounds x="560" y="280" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1yhf36c_di" bpmnElement="Flow_1yhf36c">
+        <di:waypoint x="360" y="330" />
+        <di:waypoint x="560" y="330" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

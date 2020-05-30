@@ -1,0 +1,21 @@
+.title {
+	color: red;
+}
+.form {
+	margin-left: 30%;
+	/*margin-top: 50%;*/
+}
+.input {
+	display: flex;
+	flex-direction:column;
+}
+input {
+	margin-bottom: 5px;
+	width:500px;
+}
+.button {
+	width:300px;
+	position:center;
+	position: relative;
+	left:80px;
+}

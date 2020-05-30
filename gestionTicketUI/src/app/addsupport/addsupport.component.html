@@ -1,0 +1,84 @@
+<div class="wrap-login100">
+  <form class="login100-form validate-form" *ngIf="!isSuccessful" name="form" (ngSubmit)="f.form.valid && onSubmit()"
+    #f="ngForm" novalidate>
+    <span class="login100-form-title p-b-43">
+      Ajouter un support </span>
+    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+      <input class="input100" type="text" name="username" placeholder="Username" [(ngModel)]="form.username" required
+        minlength="3" maxlength="20" #username="ngModel" />
+
+      <div class="alert-danger" *ngIf="f.submitted && username.invalid">
+        <div *ngIf="username.errors.required">Username is required</div>
+        <div *ngIf="username.errors.minlength">
+          Username must be at least 3 characters
+        </div>
+        <div *ngIf="username.errors.maxlength">
+          Username must be at most 20 characters
+        </div>
+      </div>
+      <span class="focus-input100"> </span>
+      <span class="label-input100"> </span>
+    </div>
+
+
+    <br> <br>
+    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+      <input class="input100" type="text" name="email" placeholder="Email" [(ngModel)]="form.email" required email
+        #email="ngModel" />
+
+      <div class="alert-danger" *ngIf="f.submitted && email.invalid">
+        <div *ngIf="email.errors.required">Email is required</div>
+        <div *ngIf="email.errors.email">
+          Email must be a valid email address
+        </div>
+      </div>
+      <span class="focus-input100"></span>
+    </div>
+
+    <br> <br>
+
+    <div class="wrap-input100 validate-input" data-validate="Password is required">
+      <input class="input100" type="password" placeholder="Password" name="password" [(ngModel)]="form.password"
+        required minlength="6" #password="ngModel" />
+
+      <div class="alert-danger" *ngIf="f.submitted && password.invalid">
+        <div *ngIf="password.errors.required">Password is required</div>
+        <div *ngIf="password.errors.minlength">
+          Password must be at least 6 characters
+        </div>
+      </div>
+    </div>
+    <div class="wrap-input100 validate-input" data-validate="label is required">
+      <input class="input100" type="text" placeholder="label" name="label" [(ngModel)]="form.label"
+        required  #label="ngModel" />
+
+     
+    </div>
+
+    <br> <br>
+
+    <div class="container-login100-form-btn">
+      <button class="login100-form-btn">
+        Register
+      </button>
+    </div>
+
+    <div class="text-center p-t-46 p-b-20">
+      <span class="txt2">
+        or sign up using
+      </span>
+    </div>
+
+    <div class="login100-form-social flex-c-m">
+      <a href="#" class="login100-form-social-item flex-c-m bg1 m-r-5">
+        <i class="fa fa-facebook-f" aria-hidden="true"></i>
+      </a>
+
+      <a href="#" class="login100-form-social-item flex-c-m bg2 m-r-5">
+        <i class="fa fa-twitter" aria-hidden="true"></i>
+      </a>
+    </div>
+  </form>
+  <div class="login100-more" style="background-image: url('/assets/img/bg3.PNG');">
+  </div>
+</div>

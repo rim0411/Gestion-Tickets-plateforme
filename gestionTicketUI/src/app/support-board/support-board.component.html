@@ -1,0 +1,415 @@
+
+<nav class="navbar navbar-light bg-light " style="background-color: #e3f2fd;height: 70px ;">
+<h5 style="color: blue;"> Chercher un ticket</h5>
+<section class="search-sec" style="margin-left: 200px;margin-top: 10px;">
+  <div class="container">
+      <form action="#" method="post" novalidate="novalidate">
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="row">
+                   
+                    <div class="col-lg-3 col-md-3 col-sm-12 p-0" >
+                     
+                   <label style="margin-left: 250px; color: blue;">Label:</label>
+                    
+                  </div>
+                      <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                     
+                        <select data-style="btn-primary"  class="selectpicker" title="Choose one of the following..." class="form-control search-slt" id="exampleFormControlSelect1"   [(ngModel)]="form" name="form" class="form-control form-control-sm" required  (click)="recherchebylabel(form)" style="margin-left: 90px;">
+                           
+                  
+                          <option   *ngFor="let label of labelsname" [value]="label">{{label}}</option>
+                      
+                        </select>
+                       
+                       
+                        
+                    </div>
+                   
+                   
+                    <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                      <label style="margin-left: 140px;color: blue;">Assigner: </label>
+                      
+                     </div>
+                      <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                        <select  class="browser-default custom-select"  [(ngModel)]="form" name="form" class="form-control form-control-sm" required  (click)="recherchebyassigner()" style="margin-left: 10px;" >
+                            <option  *ngFor="let assigner of supports" [value]="assigner">{{assigner}}</option>
+                          </select>
+                          
+  <button></button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </form>
+  </div>
+</section>
+</nav>
+ 
+<br> <br> <br> <br>
+
+<div class="size">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 " style="margin-top:20px;width: 20px;">
+        <div class="scrollbar" id="style-7" style="width:500px;">
+          <button class="login100-form-btn" style="font-size: 13px;">Statut En attente</button>
+          <table class="table table-hover" style="background: rgba(128, 128, 128, 0.082);">
+            <thead class="dark white-text">
+              <tr>
+                <th>Titre</th>
+                <th>L'assigner</th>
+                <th>Label</th>
+                <th></th>
+                <th></th>
+
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ticket of tickets ">
+              
+                <td>{{ticket.titre}}</td>
+                <td>{{ticket.assigner}}</td>
+                <td>
+                  {{ticket.label.name}}</td>
+                <td data-toggle="tooltip" title="Changer l'assigner">
+                  <svg data-toggle="modal" data-target="#elegantModalForm" (click)="openModal(ticket)" 
+                    style="margin-left: 4px;" class="bi bi-person-fill" width="4em" height="2em" viewBox="0 0 16 16"
+                    fill="darkblue" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 100-6 3 3 0 000 6z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  
+
+                
+
+                </td>
+                <td data-toggle="tooltip" title="Commencer le traitement">
+                  <svg (click)=" setstatut(ticket.id_ticket)" class="bi bi-chevron-double-right" width="1.5em"
+                    height="2em" viewBox="0 0 16 16" fill="darkblue" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                      d="M3.646 1.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L9.293 8 3.646 2.354a.5.5 0 010-.708z"
+                      clip-rule="evenodd" />
+                    <path fill-rule="evenodd"
+                      d="M7.646 1.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L13.293 8 7.646 2.354a.5.5 0 010-.708z"
+                      clip-rule="evenodd" />
+
+                  </svg>
+                <td>
+                  <i style="font-size: large;" class="fas fa-info" (click)="openModal(ticket)"  data-toggle="modal"
+                  data-target="#elegantModalForm2"
+                  style="color:darkblue"></i>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <div class="col-sm-6 " style="margin-top: 18px;">
+        <div class="scrollbar" id="style-7" style="width:500px;">
+          <button class="login100-form-btn" style="font-size: 13px;">Statut En cour</button>
+          <table class="table table-hover" style="background: rgba(128, 128, 128, 0.082);">
+            <thead>
+              <tr>
+                <th>Titre</th>
+                <th>L'assigner</th>
+                <th>label</th>
+
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ticket of tickets2 ">
+
+                <td>{{ticket.titre}}</td>
+                <td>{{ticket.assigner}}</td>
+                <td>{{ticket.label.name}}</td>
+
+
+                <div *ngIf="getassigner(ticket.assigner)!=null">
+                  <td data-toggle="tooltip" title="Finaliser le traitement">
+                    <svg (click)="setstatutenfinDetraitement(ticket.id_ticket,ticket)" data-toggle="tooltip"
+                      title="Hooray!" class="bi bi-chevron-double-right" width="1.5em" height="1.5em"
+                      viewBox="0 0 16 16" fill="darkblue" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd"
+                        d="M3.646 1.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L9.293 8 3.646 2.354a.5.5 0 010-.708z"
+                        clip-rule="evenodd" />
+                      <path fill-rule="evenodd"
+                        d="M7.646 1.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L13.293 8 7.646 2.354a.5.5 0 010-.708z"
+                        clip-rule="evenodd" />
+
+                    </svg>
+                  </td>
+
+                  <td data-toggle="tooltip" title="details">
+                    <i style="font-size: large;" class="fas fa-info" (click)="openModal(ticket)"  data-toggle="modal"
+                    data-target="#elegantModalForm3"
+                    style="color:darkblue"></i>
+                  </td>
+                </div>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 " style="margin-top:20px;width: 20px;">
+        <div data-spy="scroll" data-offset="0">
+          <div class="scrollbar" id="style-7" style="width: 500px;">
+            <button class="login100-form-btn" style="font-size: 13px;">Statut en attente de confirmation</button>
+            <table class="table table-hover" style="background: rgba(128, 128, 128, 0.082);">
+
+              <thead>
+                <tr>
+                  <th>Titre</th>
+                  <th>L'assigner</th>
+                  <th>label</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <tr *ngFor="let ticket of tickets3 ">
+               
+                  <td>{{ticket.titre}}</td>
+                  <td>{{ticket.assigner}}</td>
+                  <td>{{ticket.label.name}}</td>
+
+
+                    <td data-toggle="tooltip" title="Finaliser le traitement" *ngIf="getactionfaite(ticket.actionafaire)== ch && getactionfaite(ticket.actionFaite)== ch ">
+                      <svg style="color:darkblue;" (click)="action(ticket)" class="bi bi-chevron-double-right"
+                        width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="darkblue"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                          d="M3.646 1.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L9.293 8 3.646 2.354a.5.5 0 010-.708z"
+                          clip-rule="evenodd" />
+                        <path fill-rule="evenodd"
+                          d="M7.646 1.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L13.293 8 7.646 2.354a.5.5 0 010-.708z"
+                          clip-rule="evenodd" />
+                      </svg>
+                    </td>
+                    <td data-toggle="tooltip" title="traitement finalisé"  *ngIf="getactionfaite(ticket.actionafaire)!= ch || getactionfaite(ticket.actionFaite)!= ch"><svg style="color:green;"
+                        class="bi bi-check-circle" data-toggle="tooltip" data-original-title="Filter"
+                        class="bi bi-check" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                          d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z"
+                          clip-rule="evenodd" />
+                      </svg>
+                    </td>
+                    <td>
+                    <i style="font-size: large;" class="fas fa-info" (click)="openModal(ticket)"  data-toggle="modal"
+                    data-target="#elegantModalForm3"
+                    style="color:darkblue"></i>
+                  </td> 
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 " style="margin-top: 18px;">
+        <div class="scrollbar" id="style-7" style="width:500px;">
+
+          <button class="login100-form-btn" style="font-size: 13px;">Statut Fermé</button>
+          <table class="table table-hover" style="background: rgba(128, 128, 128, 0.082);">
+            <thead class="dark white-text">
+              <tr>
+                <th>Titre</th>
+
+                <th>L'assigner</th>
+                <th>Label</th>
+                <th></th>
+                <th></th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ticket of tickets4 ">
+
+                <td>{{ticket.titre}}</td>
+                <td>{{ticket.assigner}}</td>
+                <td>
+                  {{ticket.label.name}}
+
+                </td>
+              
+                <td data-toggle="tooltip" title="details">
+                  <i style="font-size: large;" class="fas fa-info" (click)="openModal(ticket)"  data-toggle="modal"
+                  data-target="#elegantModalForm3"
+                  style="color:darkblue"></i> 
+
+                 
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<div class="modal fade" id="elegantModalForm3" tabindex="-1" role="dialog"
+aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <!--Content-->
+  <div class="modal-content form-elegant">
+    <!--Header-->
+    <div class="modal-header text-center">
+      <h3 class="modal-title w-100 dark-grey-text font-weight-bold my-3" id="myModalLabel">
+        <p style="color: darkblue;font-weight: bold;font-size: 20px;">Les details du ticket </p>
+      </h3>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <!--Body-->
+    <div class="modal-body mx-4">
+      <!--Body-->
+      <div class="md-form mb-5">
+          <div class="zz">
+            <div class="card"
+              style="width: 27rem;margin: auto;margin-top: 15px; margin-bottom: 15px; background-color: rgb(244, 245, 233); background-image: url('') ;">
+              <img class="card-img-top" src="..." alt="">
+              <div class="card-body" style="font-size: 15px;">
+                <h5 class="card-title"></h5>
+                <label style="color:darkblue">Date de création:</label> <br>
+                <div style="color: rgb(91, 34, 167);">  {{selectedTicket.dateDecreation}} </div>
+                <label style="color:darkblue">Titre:</label> <br>
+
+                <div style="color: rgb(91, 34, 167);"> {{selectedTicket.titre}} <br>  <br></div>
+                <label style="color:darkblue">Description:</label> <br>
+                <div style="color: rgb(91, 34, 167);">   {{selectedTicket.description}} <br> <br></div>
+                <label style="color:darkblue">actionfaites:</label> <br>
+                <div style="color: rgb(91, 34, 167);">   {{selectedTicket.actionFaite}} <br> <br> </div>
+                <label style="color:darkblue">actionafaire:</label> <br>
+                <div style="color: rgb(91, 34, 167);">  {{selectedTicket.actionafaire}} </div>
+                <label style="color:darkblue">Date de dernière modification:</label> <br>
+                <div style="color: rgb(91, 34, 167);">  {{selectedTicket.date}} </div>
+              
+              <label style="color:darkblue">Nom de l'utilisateur:</label> <br>
+              <div style="color: rgb(91, 34, 167);">  {{selectedTicket.user.username}} </div>
+            </div>
+              
+
+            </div>
+          </div>
+     
+      </div>
+    </div>
+    <!--Footer-->
+    <div class="modal-footer mx-5 pt-3 mb-1">
+      <p class="font-small grey-text d-flex justify-content-end"> <a href="#"
+          class="blue-text ml-1">
+        </a></p>
+    </div>
+  </div>
+  <!--/.Content-->
+</div>
+</div>
+<div class="modal fade" id="elegantModalForm2" tabindex="-1" role="dialog"
+aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <!--Content-->
+  <div class="modal-content form-elegant">
+    <!--Header-->
+    <div class="modal-header text-center">
+      <h3 class="modal-title w-100 dark-grey-text font-weight-bold my-3" id="myModalLabel">
+        <p style="color: darkblue;font-weight: bold;font-size: 20px;">Les details du ticket </p>
+      </h3>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <!--Body-->
+    <div class="modal-body mx-4">
+      <!--Body-->
+      <div class="md-form mb-5">
+          <div class="zz">
+            <div class="card"
+              style="width: 27rem;margin: auto;margin-top: 15px; margin-bottom: 15px; background-color: rgb(244, 245, 233); background-image: url('') ;">
+              <img class="card-img-top" src="..." alt="">
+              <div class="card-body" style="font-size: 15px;">
+                <h5 class="card-title"></h5>
+                <label style="color:darkblue">Date de création:</label> <br>
+                <div style="color: rgb(91, 34, 167);">  {{selectedTicket.dateDecreation}} <br>  <br></div>
+                <div  *ngIf="getactionfaite(this.actionafaire)!= ch || getactionfaite(this.actionfaite)!= ch">
+
+                <div    style="color: rgb(91, 34, 167);">  <label   style="color:darkblue">Date de dernière modification:</label> <br>  {{selectedTicket.date}} <br>  <br></div>
+              </div>
+                <label style="color:darkblue">Titre:</label> <br> 
+
+                <div style="color: rgb(91, 34, 167);"> {{selectedTicket.titre}} <br>  <br></div>
+                <label style="color:darkblue">Description:</label> <br>
+                <div style="color: rgb(91, 34, 167);">   {{selectedTicket.description}} <br> <br></div>
+                <label style="color:darkblue">actionfaites:</label> <br>
+                <div style="color: rgb(91, 34, 167);">   {{selectedTicket.actionFaite}} <br> <br> </div>
+                <label style="color:darkblue">actionafaire:</label> <br>
+                <div style="color: rgb(91, 34, 167);">  {{selectedTicket.actionafaire}} </div>
+                <label style="color:darkblue">Nom de l'utilisateur:</label> <br>
+              <div style="color: rgb(91, 34, 167);">  {{selectedTicket.user.username}} </div>
+              </div>
+              
+
+            </div>
+          </div>
+     
+      </div>
+    </div>
+    <!--Footer-->
+    <div class="modal-footer mx-5 pt-3 mb-1">
+      <p class="font-small grey-text d-flex justify-content-end"> <a href="#"
+          class="blue-text ml-1">
+        </a></p>
+    </div>
+  </div>
+  <!--/.Content-->
+</div>
+</div>
+
+<!-- Modal -->
+
+<div class="modal fade" id="elegantModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+     <div class="text-center">
+      <h3 class="modal-title" id="exampleModalLabel" style="color: darkblue;font-weight: bold;font-size: 20px;">
+         </h3>
+      </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="font-size: 20px;">
+        <form action="" (ngSubmit)=" Actualiser(selectedTicket)">
+          <div class="form-group">
+            <label style="font-family: Georgia;font-size:15px ;">L'assigner</label>
+            <input type="text" class="form-control" [(ngModel)]="assigner2"
+              name="assigner2">
+          </div>
+          <a (click)="assignemoi(ticket)"
+            style="color:blue;text-decoration: underline;"><i>Assigner à moi </i></a> <br> <br>
+          <p></p>
+          <button class="btn btn-info">Enregister</button>
+        </form>
+
+
+
+        
+     
+    </div>
+  </div>
+</div>

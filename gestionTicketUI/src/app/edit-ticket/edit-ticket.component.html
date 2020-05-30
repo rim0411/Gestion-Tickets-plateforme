@@ -1,0 +1,58 @@
+<div class="modal fade" id="elegantModalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <!--Content-->
+    <div class="modal-content form-elegant">
+      <!--Header-->
+      <div class="modal-header text-center">
+        <h3 class="modal-title w-100 dark-grey-text font-weight-bold my-3" id="myModalLabel">
+          <p style="color: darkblue;font-weight: bold;font-size: 20px;">{{ticket.titre}} </p>
+        </h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!--Body-->
+      <div class="modal-body mx-4">
+        <!--Body-->
+        <div class="md-form mb-5">
+
+
+          <div [hidden]="submitted" style="width: 300px;">
+
+            <form action="" (ngSubmit)=" Actualiser(ticket)">
+              <div class="form-group">
+                <label>Assigner</label>
+
+                <input type="text" class="form-control" [(ngModel)]="ticket.assigner" name="assigner">
+              </div>
+              <a (click)="assignemoi()" style="color:blue;text-decoration: underline;"><i>Assigner à moi </i></a> <br>
+              <br>
+              <p></p>
+              <button class="btn btn-info">Enregister</button>
+            </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <!--Footer-->
+      <div class="modal-footer mx-5 pt-3 mb-1">
+        <p class="font-small grey-text d-flex justify-content-end">Merci! <a href="#" class="blue-text ml-1">
+          </a></p>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
